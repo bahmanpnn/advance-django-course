@@ -14,4 +14,5 @@ RUN pip install -r requirements.txt
 
 COPY ./backend /app
 
-CMD [ "python3","manage.py","runserver","0.0.0.0:8000" ]
+# this command set in docker compose file so doesnt need to use again here
+# CMD [ "python3","manage.py","runserver","0.0.0.0:8000" ] 
