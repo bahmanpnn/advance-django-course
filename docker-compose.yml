@@ -1,10 +1,13 @@
 services:
   backend:
     build: .
+    container_name: advance_django_backend
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./backend /app
+      - ./backend:/app
     ports:
       - 8000:8000
-    # environment:
-    #   - name=value
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-yxq*a7j+s5+^uwr&c#h@u2wp0c1ukthrf9^k$0$=p04+-*7g!#
+      # - ALLOWED_HOSTS= *
