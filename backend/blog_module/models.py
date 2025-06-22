@@ -6,7 +6,7 @@ class Post(models.Model):
     ''' This is a class to define posts for blog app'''
     author=models.ForeignKey(User,on_delete=models.CASCADE)
     image=models.ImageField(null=True,blank=True)
-    title=models.CharField(max_length=254)
+    title=models.CharField(max_length=255)
     content=models.TextField()
     category=models.ForeignKey('Category',on_delete=models.SET_NULL,null=True)
     status=models.BooleanField()
@@ -21,7 +21,7 @@ class Post(models.Model):
 
 class Category(models.Model):
     ''' This is a class to define categories for posts of blog app'''
-    name=models.CharField(max_length=254)
+    name=models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
