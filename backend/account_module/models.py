@@ -1,16 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager,AbstractBaseUser,PermissionsMixin)
-from django.utils.translation import ungettext_lazy as _
+# from django.utils.translation import ugettext_lazy as _
 
 
 class UserManager(BaseUserManager):
     """
         Custom user model manager where email is the unique identifiers authentication instead of usernames.
     """
-    def create_user(self,email,password,phone_number,**extra_fields):
+    def create_user(self,email,password,**extra_fields):
         ''' create and save a simple user with the given email and password with extra data'''
         if not email:
-            raise ValueError(_("the Email must be set"))
+            # raise ValueError(_("the Email must be set"))
+            raise ValueError("the Email must be set")
         email= self.normalize_email(email)
         user=self.model(email=email,**extra_fields)
         user.set_password(password)
@@ -18,18 +19,19 @@ class UserManager(BaseUserManager):
         return user
 
 
-    def create_superuser(self,email,password,phone_number,**extra_fields):
+    def create_superuser(self,email,password,**extra_fields):
         ''' create and save a super user with the given email and password with extra data'''
         extra_fields.setdefault('is_staff',True)
         extra_fields.setdefault('is_active',True)
         extra_fields.setdefault('is_superuser',True)
 
         if extra_fields.get('is_staff') is not True:
-            raise ValueError(_("superuser must have is_staff=True."))
+            # raise ValueError(_("superuser must have is_staff=True."))
+            raise ValueError("superuser must have is_staff=True.")
         if extra_fields.get('is_superuser') is not True:
-            raise ValueError(_("superuser must have is_superuser=True."))
+            # raise ValueError(_("superuser must have is_superuser=True."))
+            raise ValueError("superuser must have is_superuser=True.")
         return self.create_user(email,password,**extra_fields)
-
 
 
 class User(AbstractBaseUser,PermissionsMixin):
@@ -38,7 +40,7 @@ class User(AbstractBaseUser,PermissionsMixin):
     """
 
     email=models.EmailField(max_length=255,unique=True)
-    phone_number=models.CharField(max_length=32,unique=True)
+    phone_number=models.CharField(max_length=32,unique=True,null=True,blank=True)
     is_staff=models.BooleanField(default=False)
     is_superuser=models.BooleanField(default=False)
     is_active=models.BooleanField(default=True)
@@ -48,7 +50,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     last_name=models.CharField(max_length=255)
 
     USERNAME_FIELD='email'
-    REQUIRED_FIELDS=['phone_number']
+    REQUIRED_FIELDS=[]
+    # REQUIRED_FIELDS=['phone_number']
 
     created_date=models.DateTimeField(auto_now_add=True)
     updated_date=models.DateTimeField(auto_now=True)
@@ -56,4 +59,4 @@ class User(AbstractBaseUser,PermissionsMixin):
     objects=UserManager()
     def __str__(self):
         return self.email
-    
+
