@@ -1,5 +1,7 @@
 from pathlib import Path
 from decouple import config
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -108,7 +110,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/' #this is for load static in templates==> {% static '<directory/file.format>' %}
+STATIC_ROOT=BASE_DIR / "static"
+# This is the directory that use for production mode and when you run collectstatic command,
+# All the static files that are in static directories collect in this directory.
+
+# This is for all the directory that set in django settings and load all the static files in developing mode
+STATICFILES_DIRS = [ BASE_DIR / 'static_files' ] # developing mode and doesnt need for production
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] # developing mode
+
+
+#media url is for load and server medias in site and templates
+MEDIA_URL='/media/'
+
+#media root is for uploading medias from user and site.it needs to add urls in base urls project
+MEDIA_ROOT= BASE_DIR / 'media'
+# MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
+
+
+
+# Production static and media configs
+# STATIC_URL = "/static/"
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static') # production mode
+# STATIC_ROOT=BASE_DIR.parent / "static"
+# This is the directory that use for production mode and when you run collectstatic command,
+# All the static files that are in static directories collect in this directory.
+
+# MEDIA_URL="/media_files/"
+# MEDIA_ROOT=BASE_DIR.parent / "media_files"
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
