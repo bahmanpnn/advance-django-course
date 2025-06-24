@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager,AbstractBaseUser,PermissionsMixin)
 # from django.utils.translation import ugettext_lazy as _
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
 
 class UserManager(BaseUserManager):
@@ -68,4 +70,18 @@ class Profile(models.Model):
     updated_date=models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user
+        # return f'{self.user.email}'
+        return self.user.email
+
+
+@receiver(post_save,sender=User)
+def create_user_profile(sender,instance,created,**kwargs):
+    """
+        this function is a signal and create a profile after creating a new user object with post_save.
+        sender is a model or class that is a trigger action.
+        instance is an object of sender model/class.
+        created is a bool type and if instnace created value is true it means that it created and function uses for first time.
+        if we update instance of sender model/class profile created value is false and we check and use condition to ignore creating new profile instance for user model.
+    """
+    if created:
+        Profile.objects.create(user=instance)
