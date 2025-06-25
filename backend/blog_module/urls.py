@@ -17,4 +17,7 @@ urlpatterns = [
     path('go-to-google-two/',RedirectView.as_view(pattern_name="blog_module:fbv-index"),name='redirectview-two'),
     path('go-to-google-three/',RedirectView.as_view(pattern_name="blog_module:fbv-index",permanent=True),name='redirectview-three'),
     
+    path('fbv-go-to-google/',views.redirect_to_google.as_view(),name='fbv-redirectview'),
+    path('cbv-go-to-google/<int:pk>/',views.RedirectToGoogle.as_view(),name='cbv-redirectview'),
+
 ]

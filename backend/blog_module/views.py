@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.views.generic.base import TemplateView
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic.base import TemplateView,RedirectView
 from .models import Post
 
 def index(request):
@@ -23,3 +23,16 @@ class IndexTemplateView(TemplateView):
         context['name']="template view bahmanpn"
         context['posts']=Post.objects.all()
         return context
+
+
+def redirect_to_google(request):
+    return redirect("http://127.0.0.1:8000")
+
+class RedirectToGoogle(RedirectView):
+    url="http://127.0.0.1:8000"
+    # permanent=False / True
+
+    def get_redirect_url(self, *args, **kwargs):
+        post=get_object_or_404(Post,pk=kwargs['pk'])
+        print(post)
+        return super().get_redirect_url(*args, **kwargs)
