@@ -11,13 +11,16 @@ urlpatterns = [
     # path('cbv-templateview-index/',views.IndexTemplateView.as_view(),name='cbv-templateview-index'),
     path('cbv-templateview-index/<str:param>',views.IndexTemplateView.as_view(),name='cbv-templateview-index'),
 
-    # redirect-view
-    # permanent false means status code 302(temporary redirecting) but default is true and status code 301(its not temporary redirecting)
+    # Redirect-view
+    # Permanent false means status code 302(temporary redirecting) but default is true and status code 301(its not temporary redirecting)
     path('go-to-google/',RedirectView.as_view(url="http://127.0.0.1:8000/blog/cbv-templateview-index/test"),name='redirectview-one'),
     path('go-to-google-two/',RedirectView.as_view(pattern_name="blog_module:fbv-index"),name='redirectview-two'),
     path('go-to-google-three/',RedirectView.as_view(pattern_name="blog_module:fbv-index",permanent=True),name='redirectview-three'),
     
-    path('fbv-go-to-google/',views.redirect_to_google.as_view(),name='fbv-redirectview'),
+    path('fbv-go-to-google/',views.redirect_to_google,name='fbv-redirectview'),
     path('cbv-go-to-google/<int:pk>/',views.RedirectToGoogle.as_view(),name='cbv-redirectview'),
 
+    # List view
+    path('posts/',views.PostListView.as_view(),name='post-list'),
+    # path('post-detail/',views.PostDetailView.as_view(),name='post-detail'),
 ]
