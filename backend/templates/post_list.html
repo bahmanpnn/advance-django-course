@@ -8,10 +8,12 @@
 <body>
     <h2>Post List</h2>
     {% for post in posts %}
-        {{post.title}}
-        <br>
-        {{post.content}}
-        <hr>
+        <li>
+            <a href="{% url "blog_module:post-detail" pk=post.pk %}">{{post.title}}</a>
+            <br>
+            {{post.content}}
+            <hr>
+        <li>
     {% endfor %}
     <div>
         <span class="step-links">

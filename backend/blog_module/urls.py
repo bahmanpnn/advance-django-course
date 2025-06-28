@@ -22,5 +22,5 @@ urlpatterns = [
 
     # List view
     path('posts/',views.PostListView.as_view(),name='post-list'),
-    # path('post-detail/',views.PostDetailView.as_view(),name='post-detail'),
+    path('post-detail/<int:pk>/',views.PostDetailView.as_view(),name='post-detail'),
 ]
