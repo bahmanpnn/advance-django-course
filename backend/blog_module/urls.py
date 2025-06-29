@@ -20,7 +20,12 @@ urlpatterns = [
     path('fbv-go-to-google/',views.redirect_to_google,name='fbv-redirectview'),
     path('cbv-go-to-google/<int:pk>/',views.RedirectToGoogle.as_view(),name='cbv-redirectview'),
 
-    # List view
+    # List view + Detail view
     path('posts/',views.PostListView.as_view(),name='post-list'),
     path('post-detail/<int:pk>/',views.PostDetailView.as_view(),name='post-detail'),
+
+    # Form view + Create view
+    path('posts/form-view/',views.PostFormView.as_view(),name='post-form'),
+    path('posts/create-view/',views.PostCreateView.as_view(),name='post-create-form'),
+
 ]

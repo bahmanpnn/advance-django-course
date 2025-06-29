@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.base import TemplateView,RedirectView
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,FormView,CreateView
 from .models import Post
+from .forms import PostForm,PostCreateForm
+
 
 def index(request):
     context={
@@ -43,7 +45,7 @@ class RedirectToGoogle(RedirectView):
 class PostListView(ListView):
     template_name='post_list.html' # default template name of this class is post_list.html too and doesnt need to set it again and django find it auto.
     context_object_name="posts" # if we dont set it default object name is object list.
-    paginate_by=2
+    paginate_by=8
 
     # ordering='-id' # remember that it has conflict with queryset and cant have both at a time and we can just have it when set model attr.
     # model=Post
@@ -67,3 +69,35 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     template_name="post_detail.html"
     model=Post
+    # context_object_name='post'
+
+    # def get_context_data(self, **kwargs):
+    #     return super().get_context_data(**kwargs)
+    
+
+class PostFormView(FormView):
+    """
+        we dont use form view for having connection with database a lot and it works more for something like sending email for admin or something like that doesnt have any affect on database.
+        but i use it to test and save this form and create new object of post model in database.
+    """
+    template_name="post_form.html"
+    success_url="/blog/posts"
+    form_class=PostForm
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+    
+
+class PostCreateView(CreateView):
+
+    model=Post
+    form_class=PostCreateForm # we can use fields attr instead of formclass too,but fields styling handleling is too difficult.
+    template_name="post_create_form.html"
+    success_url="/blog/posts"
+
+    def form_valid(self, form):
+        form.instance.author=self.request.user
+        form.save()
+        return super().form_valid(form)
+    

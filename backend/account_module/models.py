@@ -64,7 +64,7 @@ class Profile(models.Model):
     phone_number=models.CharField(max_length=32,unique=True,null=True,blank=True)
     first_name=models.CharField(max_length=255)
     last_name=models.CharField(max_length=255)
-    # avatar=models.ImageField(null=True,blank=True)
+    avatar=models.ImageField(null=True,blank=True)
     description=models.TextField()
     created_date=models.DateTimeField(auto_now_add=True)
     updated_date=models.DateTimeField(auto_now=True)
