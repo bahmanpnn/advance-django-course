@@ -28,4 +28,7 @@ urlpatterns = [
     path('posts/form-view/',views.PostFormView.as_view(),name='post-form'),
     path('posts/create-view/',views.PostCreateView.as_view(),name='post-create-form'),
 
+    # Update view + Delete view
+    path('posts/<int:pk>/update/',views.PostUpdateView.as_view(),name='post-update'),
+
 ]
