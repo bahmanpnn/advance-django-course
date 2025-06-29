@@ -11,6 +11,8 @@
         <li>
             {{post.pk}} - <a href="{% url "blog_module:post-detail" pk=post.pk %}">{{post.title}}</a>
             <br>
+            {{post.author.first_name}} - {{post.author.last_name}}
+            <br>
             {{post.content}}
             <br>
             <a href="{% url "blog_module:post-update" pk=post.pk %}">edit</a>
