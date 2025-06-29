@@ -12,7 +12,9 @@
             {{post.pk}} - <a href="{% url "blog_module:post-detail" pk=post.pk %}">{{post.title}}</a>
             <br>
             {{post.content}}
+            <br>
             <a href="{% url "blog_module:post-update" pk=post.pk %}">edit</a>
+            <a href="{% url "blog_module:post-delete" pk=post.pk %}">delete</a>
             <hr>
         <li>
     {% endfor %}

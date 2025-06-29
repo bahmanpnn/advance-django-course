@@ -109,3 +109,8 @@ class PostUpdateView(UpdateView):
     success_url="/blog/posts"
 
 
+class PostDeleteView(DeleteView):
+    template_name="post_delete_form.html"
+    model=Post
+    # form_class=PostDeleteForm
+    success_url="/blog/posts"
