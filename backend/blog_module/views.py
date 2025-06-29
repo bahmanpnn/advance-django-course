@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.base import TemplateView,RedirectView
 from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Post
 from .forms import PostForm,PostCreateForm
 
@@ -42,7 +43,7 @@ class RedirectToGoogle(RedirectView):
         return super().get_redirect_url(*args, **kwargs)
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin,ListView):
     template_name='post_list.html' # default template name of this class is post_list.html too and doesnt need to set it again and django find it auto.
     context_object_name="posts" # if we dont set it default object name is object list.
     paginate_by=8
@@ -66,7 +67,7 @@ class PostListView(ListView):
         return query
 
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin,DetailView):
     template_name="post_detail.html"
     model=Post
     # context_object_name='post'
@@ -75,7 +76,7 @@ class PostDetailView(DetailView):
     #     return super().get_context_data(**kwargs)
     
 
-class PostFormView(FormView):
+class PostFormView(LoginRequiredMixin,FormView):
     """
         we dont use form view for having connection with database a lot and it works more for something like sending email for admin or something like that doesnt have any affect on database.
         but i use it to test and save this form and create new object of post model in database.
@@ -89,7 +90,7 @@ class PostFormView(FormView):
         return super().form_valid(form)
     
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
 
     model=Post
     form_class=PostCreateForm # we can use fields attr instead of formclass too,but fields styling handleling is too difficult.
@@ -102,14 +103,14 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(LoginRequiredMixin,UpdateView):
     template_name="post_create_form.html"
     model=Post
     form_class=PostCreateForm
     success_url="/blog/posts"
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin,DeleteView):
     template_name="post_delete_form.html"
     model=Post
     # form_class=PostDeleteForm
