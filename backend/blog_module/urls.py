@@ -32,4 +32,6 @@ urlpatterns = [
     path('posts/<int:pk>/update/',views.PostUpdateView.as_view(),name='post-update'),
     path('posts/<int:pk>/delete/',views.PostDeleteView.as_view(),name='post-delete'),
 
+    # Django Rest Framework
+    path('api/posts/',views.post_list_api_view,name='posts-list-api-view'),
 ]
