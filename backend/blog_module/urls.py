@@ -1,7 +1,8 @@
-from django.urls import path
-from . import views
+from django.urls import path,include
 from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
+from . import views
+
 
 app_name='blog_module'
 urlpatterns = [
@@ -33,5 +34,5 @@ urlpatterns = [
     path('posts/<int:pk>/delete/',views.PostDeleteView.as_view(),name='post-delete'),
 
     # Django Rest Framework
-    path('api/posts/',views.post_list_api_view,name='posts-list-api-view'),
+    path('api/v1/',include("blog_module.api.v1.urls")),
 ]

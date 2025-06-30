@@ -2,8 +2,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.base import TemplateView,RedirectView
 from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from .models import Post
 from .forms import PostForm,PostCreateForm
 
@@ -154,7 +152,3 @@ class PostDeleteView(LoginRequiredMixin,DeleteView):
     success_url="/blog/posts"
 
 
-# Django Rest Framework Endpoints
-@api_view()
-def post_list_api_view(request):
-    return Response("post list api view")
