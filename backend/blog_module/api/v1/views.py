@@ -9,7 +9,10 @@ from ...models import Post # from blog_module.models import Post
 # Django Rest Framework v1 Endpoints.
 @api_view()
 def post_list_api_view(request):
-    return Response("post list api view")
+    # posts=Post.objects.all()
+    posts=Post.objects.filter(status=True)
+    serializer=PostSerializer(posts,many=True)
+    return Response(serializer.data)
 
 # @api_view()
 # def post_detail_api_view(request,id):
@@ -24,6 +27,8 @@ def post_list_api_view(request):
 
 @api_view()
 def post_detail_api_view(request,id):
-    post=get_object_or_404(Post,pk=id)
+    # post=get_object_or_404(Post,pk=id)
+    # add status filtering when django wants to find post object. 
+    post=get_object_or_404(Post,pk=id,status=True)
     serializer=PostSerializer(post)
     return Response(serializer.data)
