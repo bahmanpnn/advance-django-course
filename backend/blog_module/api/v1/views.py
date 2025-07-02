@@ -59,10 +59,23 @@ def post_list_api_view(request):
 #         return Response({"detail":"post does'nt exists!! try again"},status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view()
+# @api_view()
+# def post_detail_api_view(request,id):
+#     # post=get_object_or_404(Post,pk=id)
+#     # add status filtering when django wants to find post object. 
+#     post=get_object_or_404(Post,pk=id,status=True)
+#     serializer=PostSerializer(post)
+#     return Response(serializer.data)
+
+
+@api_view(["GET","PUT"])
 def post_detail_api_view(request,id):
-    # post=get_object_or_404(Post,pk=id)
-    # add status filtering when django wants to find post object. 
     post=get_object_or_404(Post,pk=id,status=True)
-    serializer=PostSerializer(post)
-    return Response(serializer.data)
+    if request.method=="GET":
+        serializer=PostSerializer(post)
+        return Response(serializer.data)
+    elif request.method == "PUT":
+        serializer=PostSerializer(post,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
