@@ -7,13 +7,46 @@ from ...models import Post # from blog_module.models import Post
 
 
 # Django Rest Framework v1 Endpoints.
-@api_view()
-def post_list_api_view(request):
-    # posts=Post.objects.all()
-    posts=Post.objects.filter(status=True)
-    serializer=PostSerializer(posts,many=True)
-    return Response(serializer.data)
+# Post List Endpoints
 
+# @api_view()
+# def post_list_api_view(request):
+#     # posts=Post.objects.all()
+#     posts=Post.objects.filter(status=True)
+#     serializer=PostSerializer(posts,many=True)
+#     return Response(serializer.data)
+
+
+# @api_view(["GET","POST"])
+# def post_list_api_view(request):
+#     if request.method == "GET":
+#         posts=Post.objects.filter(status=True)
+#         serializer=PostSerializer(posts,many=True)
+#         return Response(serializer.data)
+#     if request.method == "POST":
+#         serializer=PostSerializer(data=request.data) # passing data arg for serializer is very important when we need checking validation.
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors)
+
+
+# more clean code for checking validation with no condition and lower code lines.
+@api_view(["GET","POST"])
+def post_list_api_view(request):
+    if request.method == "GET":
+        posts=Post.objects.filter(status=True)
+        serializer=PostSerializer(posts,many=True)
+        return Response(serializer.data)
+    if request.method == "POST":
+        serializer=PostSerializer(data=request.data) # passing data arg for serializer is very important when we need checking validation.
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+
+# Post Detail Endpoints
 # @api_view()
 # def post_detail_api_view(request,id):
 #     try:
@@ -24,6 +57,7 @@ def post_list_api_view(request):
 #         # remember that structure of sending data for response is a dictionary,
 #         # so we have to send values and args with dictionary like detail in this example.
 #         return Response({"detail":"post does'nt exists!! try again"},status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view()
 def post_detail_api_view(request,id):
