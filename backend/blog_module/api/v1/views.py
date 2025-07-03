@@ -68,7 +68,7 @@ def post_list_api_view(request):
 #     return Response(serializer.data)
 
 
-@api_view(["GET","PUT"])
+@api_view(["GET","PUT","DELETE"])
 def post_detail_api_view(request,id):
     post=get_object_or_404(Post,pk=id,status=True)
     if request.method=="GET":
@@ -79,3 +79,9 @@ def post_detail_api_view(request,id):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    elif request.method == "DELETE":
+        post.delete()
+        # its important to know in delete design pattern we can use staus 200 too and it deponds on us to choose which one is better.but 204 is more common.
+        return Response({"detail":"post deleted successfully"},status=status.HTTP_204_NO_CONTENT) 
+     
+    
