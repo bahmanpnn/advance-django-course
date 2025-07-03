@@ -156,3 +156,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL='account_module.User'
 
 # LOGIN_URL = ''
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # remember that basic and session authentications set default for authentication and if we dont set them django still uses them.
+        # for example if we send request in postman with basic authentication for endpoint that need permission something like isAuthenticated we can send username and password with basic authentication. 
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ]
+}

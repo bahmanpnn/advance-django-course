@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')), # for better experience to authentication and login in browser with django api view.
     path('accounts/', include("django.contrib.auth.urls")),
     path('blog/', include("blog_module.urls",namespace='blog_module')),
 

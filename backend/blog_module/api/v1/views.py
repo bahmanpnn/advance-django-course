@@ -1,6 +1,7 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 from django.shortcuts import get_object_or_404
 from .serializers import PostSerializer
 from ...models import Post # from blog_module.models import Post
@@ -69,6 +70,7 @@ def post_list_api_view(request):
 
 
 @api_view(["GET","PUT","DELETE"])
+@permission_classes([IsAuthenticatedOrReadOnly])
 def post_detail_api_view(request,id):
     post=get_object_or_404(Post,pk=id,status=True)
     if request.method=="GET":
@@ -84,4 +86,3 @@ def post_detail_api_view(request,id):
         # its important to know in delete design pattern we can use staus 200 too and it deponds on us to choose which one is better.but 204 is more common.
         return Response({"detail":"post deleted successfully"},status=status.HTTP_204_NO_CONTENT) 
      
-    
