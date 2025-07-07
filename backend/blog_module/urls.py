@@ -35,4 +35,5 @@ urlpatterns = [
 
     # Django Rest Framework
     path('api/v1/',include("blog_module.api.v1.urls")),
+    path('api/v2/',include("blog_module.api.v2.urls")),
 ]

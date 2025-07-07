@@ -1,0 +1,17 @@
+from rest_framework import serializers
+from ...models import Post
+
+
+# class PostSerializer(serializers.Serializer):
+#     # remember that fields name must be the same name of model fields name.
+#     # for example we cant change id or title name to another things like post_id or post_title.
+#     id=serializers.IntegerField()
+#     title=serializers.CharField(max_length=255)
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Post
+        # fields="__all__"
+        fields=["id","author","title","content","category","status","created_date","published_date"]
+    
