@@ -1,11 +1,9 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 from rest_framework.views import APIView
-from rest_framework import generics
-from rest_framework import mixins
+from rest_framework import mixins,viewsets,generics,status
 from .serializers import PostSerializer
 from ...models import Post # from blog_module.models import Post
 
@@ -141,7 +139,7 @@ class PostDetailAPIView(APIView):
 
 
 #-------------------------------------------------------------------
-# 3 generics
+# 3 generics classes
 # Post list view
 class PostListGenericAPIView(generics.ListCreateAPIView):
     """ 
@@ -183,5 +181,52 @@ class PostDetailGenericAPIView(generics.RetrieveUpdateDestroyAPIView):
     #     return self.destroy(request, *args, **kwargs)
 
 
-# 4 viewset
+# 4 viewsets
+class PostListViewSet(viewsets.ViewSet):
+    """ getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+    """
+
+    # permission_classes=[IsAuthenticatedOrReadOnly]
+    serializer_class=PostSerializer
+    queryset=Post.objects.all()
+
+    def list(self,request):
+        """ retriveing a list of posts."""
+        serializer=self.serializer_class(self.queryset,many=True)
+        return Response(serializer.data)
+
+    def create(self,request):
+        """creating a post with provided data."""
+        serializer=self.serializer_class(data=request.data)
+        return Response(serializer.data)
+    
+    def retrieve(self,request,pk=None):
+        """retrieving a post object data."""
+        post=get_object_or_404(Post,pk=pk,status=True)
+        serializer=self.serializer_class(post)
+        return Response(serializer.data)
+    
+    def update(self,request,pk=None):
+        """editing a post object data."""
+        post=get_object_or_404(Post,pk=pk,status=True)
+        serializer=self.serializer_class(post,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def destroy(self,request,pk=None):
+        """deleting a post object."""
+        post=get_object_or_404(Post,pk=pk,status=True)
+        post.delete()
+        return Response({"detail":"post deleted successfully"},status=status.HTTP_204_NO_CONTENT) 
+
+    def partial_update(self,request,pk=None):
+        """editing a partial of post object data like some fields of that obj and passs some of them not all of them?"""
+        post=get_object_or_404(Post,pk=pk,status=True)
+        serializer=self.serializer_class(post,data=request.data,partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+    
 

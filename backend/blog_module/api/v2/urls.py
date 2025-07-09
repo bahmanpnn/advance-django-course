@@ -4,9 +4,17 @@ from . import views as v2_views
 
 urlpatterns = [
     # http://127.0.0.1:8000/blog/api/v2/posts/
+
+    # apiview
     # path('posts/',v2_views.PostListAPIView.as_view(),name="cbv-post-list-api-view"),
     # path('posts/<int:pk>/',v2_views.PostDetailAPIView.as_view(),name="cbv-post-detail-api-view"),
 
-    path('posts/',v2_views.PostListGenericAPIView.as_view(),name="cbv-post-list-api-view"),
-    path('posts/<int:pk>/',v2_views.PostDetailGenericAPIView.as_view(),name="cbv-post-detail-api-view"),
+    # generic api view
+    # path('posts/',v2_views.PostListGenericAPIView.as_view(),name="cbv-post-list-api-view"),
+    # path('posts/<int:pk>/',v2_views.PostDetailGenericAPIView.as_view(),name="cbv-post-detail-api-view"),
+
+    # viewset
+    path('posts/',v2_views.PostListViewSet.as_view({"get":"list","post":"create"}),name="cbv-viewset-post-list-api-view"),
+    path('posts/<int:pk>/',v2_views.PostListViewSet.as_view({"get":"retrieve","put":"update","delete":"destroy","patch":"partial_update"}),name="cbv-viewset-post-detail-api-view"),
+
 ]
