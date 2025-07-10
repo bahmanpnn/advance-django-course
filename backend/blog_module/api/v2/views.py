@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 from rest_framework.views import APIView
 from rest_framework import mixins,viewsets,generics,status
-from .serializers import PostSerializer
-from ...models import Post # from blog_module.models import Post
+from .serializers import PostSerializer,CategorySerializer
+from ...models import Post,Category # from blog_module.models import Post
 
 
 # Django Rest Framework v2 Endpoints.
@@ -183,7 +183,8 @@ class PostDetailGenericAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 # 4 viewsets
 class PostListViewSet(viewsets.ViewSet):
-    """ getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+    """ 
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
         that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
     """
 
@@ -199,6 +200,8 @@ class PostListViewSet(viewsets.ViewSet):
     def create(self,request):
         """creating a post with provided data."""
         serializer=self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(serializer.data)
     
     def retrieve(self,request,pk=None):
@@ -230,3 +233,24 @@ class PostListViewSet(viewsets.ViewSet):
         return Response(serializer.data)
     
 
+# Model viewset inheritances all of CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin,ListModelMixin,GenericViewSet, 
+# and does'nt need to set methods just when we need to override one of them we can write that method again.
+class PostListModelViewSet(viewsets.ModelViewSet):
+    """ 
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+    """
+
+    # permission_classes=[IsAuthenticatedOrReadOnly]
+    serializer_class=PostSerializer
+    queryset=Post.objects.all()
+
+
+class CategoryListModelViewSet(viewsets.ModelViewSet):
+    """ 
+        getting a list of categories and creating new category and a detail of category object with updating or deleting that object with just one class.
+    """
+
+    # permission_classes=[IsAuthenticatedOrReadOnly]
+    serializer_class=CategorySerializer
+    queryset=Category.objects.all()
