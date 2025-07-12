@@ -1,11 +1,15 @@
 from django.urls import path,include
+from rest_framework.routers import DefaultRouter,SimpleRouter
 from . import views as v2_views
-from rest_framework.routers import DefaultRouter
+
 
 router=DefaultRouter()
 router.register('post-viewset',v2_views.PostListViewSet,basename='post-viewset')
-router.register('category',v2_views.CategoryListModelViewSet,basename='category-viewset')
 router.register('post-model-viewset',v2_views.PostListModelViewSet,basename='post-model-viewset')
+
+# remember that diffrence of default and simple router is just api-root that there is not in simple router.
+router2=SimpleRouter()
+router2.register('category',v2_views.CategoryListModelViewSet,basename='category-viewset')
 
 
 # way 1 to add router url to urlpatterns
@@ -27,7 +31,8 @@ urlpatterns = [
     path('posts/<int:pk>/',v2_views.PostListViewSet.as_view({"get":"retrieve","put":"update","delete":"destroy","patch":"partial_update"}),name="cbv-viewset-post-detail-api-view"),
 
     # way 2 to add router url to urlpatterns
-    path('post-viewset/',include(router.urls))
+    path('post-viewset/',include(router.urls)),
+    path('caregory-model-viewset/',include(router2.urls)),
 ]
 
 # way 3 to add router url to urlpatterns

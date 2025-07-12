@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view,permission_classes,action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 from rest_framework.views import APIView
@@ -254,3 +254,17 @@ class CategoryListModelViewSet(viewsets.ModelViewSet):
     # permission_classes=[IsAuthenticatedOrReadOnly]
     serializer_class=CategorySerializer
     queryset=Category.objects.all()
+
+    @action(detail=False,methods=['get'])
+    def get_category_ok(self,request):
+        """if we need extra method we can set a new method with action decorator to have extra method plus own viewset methods(list,retrieve,update,...)"""
+        return Response({"detail":"ok"})
+
+
+class CustomViewSet(mixins.CreateModelMixin,
+                    mixins.RetrieveModelMixin,
+                    mixins.ListModelMixin,
+                    viewsets.GenericViewSet):
+    """ if we need custom viewset we can create a custom viewset with generic viewset"""
+    
+    pass
