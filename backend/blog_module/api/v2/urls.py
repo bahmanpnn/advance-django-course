@@ -7,7 +7,7 @@ router=DefaultRouter()
 router.register('post-viewset',v2_views.PostListViewSet,basename='post-viewset')
 router.register('post-model-viewset',v2_views.PostListModelViewSet,basename='post-model-viewset')
 
-# remember that diffrence of default and simple router is just api-root that there is not in simple router.
+# remember that diffrence of default and simple router is just api-root and schema for documention that there is not in simple router.
 router2=SimpleRouter()
 router2.register('category',v2_views.CategoryListModelViewSet,basename='category-viewset')
 
