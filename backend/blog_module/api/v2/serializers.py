@@ -18,14 +18,25 @@ class PostSerializer(serializers.ModelSerializer):
     
     snippet=serializers.ReadOnlyField(source='get_snippet')
     relative_url=serializers.URLField(source='get_absolute_api_url',read_only=True)
+    abs_url=serializers.SerializerMethodField(method_name='get_abs_url') # with this field django search method in serializer.if dont set method name it search by default (get_)+ field name.
+
 
     class Meta:
         model=Post
         # fields="__all__"
-        fields=["id","author","title","content","category","status","created_date","published_date","snippet","relative_url"]
+        fields=["id","author","title","content","category","status","created_date","published_date","snippet","relative_url",'abs_url']
 
         # type 3 - readonly fields
         read_only_fields=['content']
+
+    def get_abs_url(self,obj):
+        """
+        this method get request dictionary and add object.pk after request url==>/blog/api/v2/modelviewset/obj.pk
+        *** remember that it works just for model serializer,if we use for simple serializer it raise none type error!!
+        """
+        req = self.context.get("request")
+        return req.build_absolute_uri(obj.pk)
+
 
 
 class CategorySerializer(serializers.ModelSerializer):
