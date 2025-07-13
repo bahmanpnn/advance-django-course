@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
 User=get_user_model()
 
@@ -19,6 +20,17 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_snippet(self):
+        return f'{self.content[:5]}...'
+    
+    def get_absolute_api_url(self):
+        # router.register('post-model-viewset',v2_views.PostListModelViewSet,basename='post-model-viewset')
+        # post-model-viewset-detail ==> 
+        # base_name + detail or other path that django view set create automaticaly
+        # post-model-viewset-detail ==> post-model-viewset + detail
+        return reverse('blog_module:api-v2:post-model-viewset-detail', kwargs={'pk': self.pk}) 
+    
 
 
 class Category(models.Model):

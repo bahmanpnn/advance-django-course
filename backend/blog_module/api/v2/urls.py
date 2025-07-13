@@ -2,6 +2,7 @@ from django.urls import path,include
 from rest_framework.routers import DefaultRouter,SimpleRouter
 from . import views as v2_views
 
+app_name="api-v2"
 
 router=DefaultRouter()
 router.register('post-viewset',v2_views.PostListViewSet,basename='post-viewset')
@@ -37,3 +38,6 @@ urlpatterns = [
 
 # way 3 to add router url to urlpatterns
 # urlpatterns+=router.urls
+
+
+
