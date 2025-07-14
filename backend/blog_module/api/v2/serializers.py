@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from ...models import Post,Category
+from account_module.models import Profile
 
 
 # class PostSerializer(serializers.Serializer):
@@ -36,7 +37,8 @@ class PostSerializer(serializers.ModelSerializer):
         fields=["id","author","image","title","content","category","status","created_date","published_date","snippet","relative_url",'abs_url']
 
         # type 3 - readonly fields
-        read_only_fields=['content']
+        read_only_fields=['content','author']
+
 
     def get_abs_url(self,obj):
         """
@@ -67,8 +69,26 @@ class PostSerializer(serializers.ModelSerializer):
         else:
             rep.pop('content',None)
 
-        rep['category']=CategorySerializer(instance.category).data # this method(to representation) is the best way to connect another serializers
+        # rep['category']=CategorySerializer(instance.category).data # this method(to representation) is the best way to connect another serializers
         
+        # if we want to use another serializer in serializer must send request for it too. 
+        # sometimes we another serialzer need request to give somethings like full path(abs_url in post serializer) 
+        # and for it we need to pass request here.
+        # without it category serializer just return relative path for field that it have like image.
+        rep['category']=CategorySerializer(instance.category,context={"request":request}).data 
+
+
         return rep
 
- 
+    def create(self, validated_data):
+        """here we set auhtor auto and doesnt need to send fill it in post mehtod."""
+        # remember that if we seperate request with  validated_data field we will have 2 query to database.so we have to consider queries in project to.
+        # request=self.context.get('request')
+        # validated_data['author']=Profile.object.get(user__id=request.user.id)
+                
+        validated_data['author']=Profile.object.get(user__id=self.context.get('request').user.id)
+        return super().create(validated_data)
+    
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+    
