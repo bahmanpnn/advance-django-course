@@ -28,7 +28,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     # category=CategorySerializer()
     # category=serializers.SlugRelatedField(many=False,read_only=True,slug_field='name')
-    category=serializers.SlugRelatedField(many=False,read_only=False,slug_field='name',queryset=Category.objects.all())
+    # category=serializers.SlugRelatedField(many=False,read_only=False,slug_field='name',queryset=Category.objects.all())
 
     class Meta:
         model=Post
@@ -46,7 +46,11 @@ class PostSerializer(serializers.ModelSerializer):
         req = self.context.get("request")
         return req.build_absolute_uri(obj.pk)
 
-    # def to_representation(self, instance):
-    #     return super().to_representation(instance)
+    def to_representation(self, instance):
+        """this method is for show object data that serve with serializer and we can change way of sending data with displaying"""
+        rep=super().to_representation(instance)
+        rep['category']=CategorySerializer(instance.category).data
+        rep.pop('snippet',None)
+        return rep
 
-
+ 
