@@ -33,7 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model=Post
         # fields="__all__"
-        fields=["id","author","title","content","category","status","created_date","published_date","snippet","relative_url",'abs_url']
+        fields=["id","author","image","title","content","category","status","created_date","published_date","snippet","relative_url",'abs_url']
 
         # type 3 - readonly fields
         read_only_fields=['content']
@@ -47,10 +47,28 @@ class PostSerializer(serializers.ModelSerializer):
         return req.build_absolute_uri(obj.pk)
 
     def to_representation(self, instance):
-        """this method is for show object data that serve with serializer and we can change way of sending data with displaying"""
+        """
+            this method is for show object data that serve with serializer and we can change way of sending data with displaying.
+            remember that, another reason of using request here is using the serializer for both list and post detail endpoints and
+            we want to handle both with one serializer but sometimes its better to seprate serializers and views. 
+        """
+        
         rep=super().to_representation(instance)
-        rep['category']=CategorySerializer(instance.category).data
-        rep.pop('snippet',None)
+
+        request=self.context.get('request')
+        # print(request.__dict__)
+
+        rep['state']='list'
+        if request.parser_context.get('kwargs').get('pk'):
+            rep['state']='single object(post)'
+            rep.pop('snippet',None)
+            rep.pop('relative_url',None)
+            rep.pop('abs_url',None)
+        else:
+            rep.pop('content',None)
+
+        rep['category']=CategorySerializer(instance.category).data # this method(to representation) is the best way to connect another serializers
+        
         return rep
 
  
