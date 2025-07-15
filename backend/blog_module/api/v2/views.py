@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 from rest_framework.views import APIView
 from rest_framework import mixins,viewsets,generics,status
+from django_filters.rest_framework import DjangoFilterBackend
+from permissions import IsAuthorOrReadOnlyPermission
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category # from blog_module.models import Post
-from permissions import IsAuthorOrReadOnlyPermission
 
 
 # Django Rest Framework v2 Endpoints.
@@ -241,11 +242,13 @@ class PostListModelViewSet(viewsets.ModelViewSet):
         getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
         that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
     """
-
     permission_classes=[IsAuthenticatedOrReadOnly,IsAuthorOrReadOnlyPermission]
     serializer_class=PostSerializer
     queryset=Post.objects.all()
 
+    filter_backends=[DjangoFilterBackend]
+    filterset_fields=['category','author','status']
+    
 
 class CategoryListModelViewSet(viewsets.ModelViewSet):
     """ 
