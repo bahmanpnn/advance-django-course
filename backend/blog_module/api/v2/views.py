@@ -9,6 +9,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from permissions import IsAuthorOrReadOnlyPermission
 from .serializers import PostSerializer,CategorySerializer
 from ...models import Post,Category # from blog_module.models import Post
+from .pagination import PostPaginationClass,CustomPostPaginationClass
 
 
 # Django Rest Framework v2 Endpoints.
@@ -252,8 +253,10 @@ class PostListModelViewSet(viewsets.ModelViewSet):
 
     # search_fields=['=title'] # its like iexact query in django orm
     search_fields=['title','content'] # its like icontains query in django orm
-    
     ordering_fields=['published_date'] # if we dont set fields for ordering django consider all the fields that the model has.
+
+    # pagination_class=PostPaginationClass
+    pagination_class=CustomPostPaginationClass
 
 
 class CategoryListModelViewSet(viewsets.ModelViewSet):
