@@ -89,6 +89,6 @@ class PostSerializer(serializers.ModelSerializer):
         validated_data['author']=Profile.object.get(user__id=self.context.get('request').user.id)
         return super().create(validated_data)
     
-    def update(self, instance, validated_data):
-        return super().update(instance, validated_data)
+    # def update(self, instance, validated_data):
+    #     return super().update(instance, validated_data)
     
