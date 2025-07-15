@@ -239,7 +239,7 @@ class PostListViewSet(viewsets.ViewSet):
 
 # Model viewset inheritances all of CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin,ListModelMixin,GenericViewSet, 
 # and does'nt need to set methods just when we need to override one of them we can write that method again.
-class PostListModelViewSet(viewsets.ModelViewSet):
+class PostListModelViewSet(viewsets.ModelViewSet): 
     """ 
         getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
         that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
@@ -249,7 +249,9 @@ class PostListModelViewSet(viewsets.ModelViewSet):
     queryset=Post.objects.all()
 
     filter_backends=[DjangoFilterBackend,SearchFilter,OrderingFilter]
-    filterset_fields=['category','author','status']
+    # filterset_class=PostFilter
+    # filterset_fields=['category','author','status']
+    filterset_fields={'category':['exact','in'],'author':['exact'],'status':['exact']}
 
     # search_fields=['=title'] # its like iexact query in django orm
     search_fields=['title','content'] # its like icontains query in django orm
@@ -281,3 +283,26 @@ class CustomViewSet(mixins.CreateModelMixin,
     """ if we need custom viewset we can create a custom viewset with generic viewset"""
     
     pass
+
+
+
+
+'''from rest_framework import generics
+from django_filters import rest_framework as filters
+from myapp import Product
+
+
+class ProductFilter(filters.FilterSet):
+    min_price = filters.NumberFilter(field_name="price", lookup_expr='gte')
+    max_price = filters.NumberFilter(field_name="price", lookup_expr='lte')
+
+    class Meta:
+        model = Product
+        fields = ['category', 'in_stock']
+
+
+class ProductList(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = ProductFilter'''
