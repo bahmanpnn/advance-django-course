@@ -1,9 +1,10 @@
 from django.shortcuts import get_object_or_404
+from rest_framework import mixins,viewsets,generics,status
 from rest_framework.decorators import api_view,permission_classes,action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 from rest_framework.views import APIView
-from rest_framework import mixins,viewsets,generics,status
+from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from permissions import IsAuthorOrReadOnlyPermission
 from .serializers import PostSerializer,CategorySerializer
@@ -246,8 +247,11 @@ class PostListModelViewSet(viewsets.ModelViewSet):
     serializer_class=PostSerializer
     queryset=Post.objects.all()
 
-    filter_backends=[DjangoFilterBackend]
+    filter_backends=[DjangoFilterBackend,SearchFilter]
     filterset_fields=['category','author','status']
+    
+    # search_fields=['=title'] # its like iexact query in django orm
+    search_fields=['title','content'] # its like icontains query in django orm
     
 
 class CategoryListModelViewSet(viewsets.ModelViewSet):
