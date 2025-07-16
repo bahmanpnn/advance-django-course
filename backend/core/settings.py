@@ -34,7 +34,9 @@ INSTALLED_APPS = [
     'blog_module',
     'account_module',
     'rest_framework',
-    'django_filters',
+    # third party packages
+    'drf_yasg', # for swagger+redoc and api document
+    'django_filters', # for drf filters(search,filtering,ordering,...)
     
 ]
 
@@ -170,5 +172,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
-    'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_SCHEMA_CLASS':'rest_framework.schemas.coreapi.AutoSchema', # for coreapi package and basic drf documentation but we dont need it because swagger is better!!
 }
