@@ -8,13 +8,14 @@ urlpatterns = [
     # http://127.0.0.1:8000/accounts/api/v1//
 
     # registration
+    path('registration/',views.RegistrationApiView.as_view(),name="registeration")
 
     # change password
 
     # reset password
 
     # login token
-    
+
     # login jwt
 
 ]
