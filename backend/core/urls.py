@@ -25,7 +25,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')), # for better experience to authentication and login in browser with django api view.
-    path('accounts/', include("django.contrib.auth.urls")),
+    path('accounts/', include("account_module.urls")),
     path('blog/', include("blog_module.urls",namespace='blog_module')),
     path('api-docs/', include_docs_urls(title='api sample')), # pip install coreapi +add configs in settings and add this for documentation to have simple documenation.
     
