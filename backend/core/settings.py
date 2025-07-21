@@ -36,7 +36,8 @@ INSTALLED_APPS = [
     
     # third party packages
     'rest_framework',
-    'rest_framework.authtoken',
+    'rest_framework.authtoken', # simple token
+    'rest_framework_simplejwt', # jwt
     'drf_yasg', # for swagger+redoc and api document
     'django_filters', # for drf filters(search,filtering,ordering,...)
     
@@ -170,6 +171,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
