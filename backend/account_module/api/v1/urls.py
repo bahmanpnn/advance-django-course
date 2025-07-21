@@ -20,6 +20,9 @@ urlpatterns = [
     path('token/login/',ObtainAuthToken.as_view(),name="token-login"),
     path('token/custom-login/',views.CustomObtainAuthToken.as_view(),name="custom-token-login"),
 
+    #logout
+    path('token/logout/',views.CustomDiscardAuthToken.as_view().as_view(),name="token-logout"),
+
     # login jwt
 
 ]

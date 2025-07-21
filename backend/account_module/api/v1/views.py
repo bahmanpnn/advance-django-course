@@ -1,8 +1,10 @@
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework import generics
-from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from .serializers import RegistrationSerializer,CustomAuthTokenSerializer
 
 
@@ -49,6 +51,17 @@ class CustomObtainAuthToken(ObtainAuthToken):
             'email':user.email
             })
     
+
+class CustomDiscardAuthToken(APIView):
+    """
+        we use APIView because it doesnt need serializer for get or post methods.so just apiview doesnt need serializer in drf views.
+    """
+    permission_classes=[IsAuthenticated]
+    
+    def post(self,request):
+        request.user.auth_token.delete()
+        # in front we can handle it and redirect user to homepage or something
+        return Response(status=status.HTTP_204_NO_CONTENT) 
 
 
 
