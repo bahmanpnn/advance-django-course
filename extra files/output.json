@@ -1,0 +1,525 @@
+swagger: '2.0'
+info:
+  title: Advance Django Project
+  description: Bigdeli Advance Django Project
+  contact:
+    email: bahmanpn@gmail.com
+  license:
+    name: BSD License
+  version: v1
+host: 127.0.0.1:8000
+schemes:
+- http
+basePath: /blog/api
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+- Basic: []
+paths:
+  /v1/posts/:
+    get:
+      operationId: v1_posts_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v1
+    post:
+      operationId: v1_posts_create
+      description: ''
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+      - v1
+    parameters: []
+  /v1/posts/{id}/:
+    get:
+      operationId: v1_posts_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v1
+    put:
+      operationId: v1_posts_update
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v1
+    delete:
+      operationId: v1_posts_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - v1
+    parameters:
+    - name: id
+      in: path
+      required: true
+      type: string
+  /v2/caregory-model-viewset/category/:
+    get:
+      operationId: v2_caregory-model-viewset_category_list
+      description: getting a list of categories and creating new category and a detail
+        of category object with updating or deleting that object with just one class.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+      tags:
+      - v2
+    post:
+      operationId: v2_caregory-model-viewset_category_create
+      description: getting a list of categories and creating new category and a detail
+        of category object with updating or deleting that object with just one class.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Category'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Category'
+      tags:
+      - v2
+    parameters: []
+  /v2/caregory-model-viewset/category/get_category_ok/:
+    get:
+      operationId: v2_caregory-model-viewset_category_get_category_ok
+      description: if we need extra method we can set a new method with action decorator
+        to have extra method plus own viewset methods(list,retrieve,update,...)
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+      tags:
+      - v2
+    parameters: []
+  /v2/caregory-model-viewset/category/{id}/:
+    get:
+      operationId: v2_caregory-model-viewset_category_read
+      description: getting a list of categories and creating new category and a detail
+        of category object with updating or deleting that object with just one class.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Category'
+      tags:
+      - v2
+    put:
+      operationId: v2_caregory-model-viewset_category_update
+      description: getting a list of categories and creating new category and a detail
+        of category object with updating or deleting that object with just one class.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Category'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Category'
+      tags:
+      - v2
+    patch:
+      operationId: v2_caregory-model-viewset_category_partial_update
+      description: getting a list of categories and creating new category and a detail
+        of category object with updating or deleting that object with just one class.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Category'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Category'
+      tags:
+      - v2
+    delete:
+      operationId: v2_caregory-model-viewset_category_delete
+      description: getting a list of categories and creating new category and a detail
+        of category object with updating or deleting that object with just one class.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - v2
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this category.
+      required: true
+      type: integer
+  /v2/post-viewset/post-model-viewset/:
+    get:
+      operationId: v2_post-viewset_post-model-viewset_list
+      description: |-
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+      parameters:
+      - name: search
+        in: query
+        description: A search term.
+        required: false
+        type: string
+      - name: ordering
+        in: query
+        description: Which field to use when ordering the results.
+        required: false
+        type: string
+      - name: page
+        in: query
+        description: A page number within the paginated result set.
+        required: false
+        type: integer
+      responses:
+        '200':
+          description: ''
+          schema:
+            required:
+            - count
+            - results
+            type: object
+            properties:
+              count:
+                type: integer
+              next:
+                type: string
+                format: uri
+                x-nullable: true
+              previous:
+                type: string
+                format: uri
+                x-nullable: true
+              results:
+                type: array
+                items:
+                  $ref: '#/definitions/Post'
+      tags:
+      - v2
+    post:
+      operationId: v2_post-viewset_post-model-viewset_create
+      description: |-
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Post'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Post'
+      tags:
+      - v2
+    parameters: []
+  /v2/post-viewset/post-model-viewset/{id}/:
+    get:
+      operationId: v2_post-viewset_post-model-viewset_read
+      description: |-
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Post'
+      tags:
+      - v2
+    put:
+      operationId: v2_post-viewset_post-model-viewset_update
+      description: |-
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Post'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Post'
+      tags:
+      - v2
+    patch:
+      operationId: v2_post-viewset_post-model-viewset_partial_update
+      description: |-
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Post'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Post'
+      tags:
+      - v2
+    delete:
+      operationId: v2_post-viewset_post-model-viewset_delete
+      description: |-
+        getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
+        that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - v2
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this post.
+      required: true
+      type: integer
+  /v2/post-viewset/post-viewset/:
+    get:
+      operationId: v2_post-viewset_post-viewset_list
+      description: retriveing a list of posts.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    post:
+      operationId: v2_post-viewset_post-viewset_create
+      description: creating a post with provided data.
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+      - v2
+    parameters: []
+  /v2/post-viewset/post-viewset/{id}/:
+    get:
+      operationId: v2_post-viewset_post-viewset_read
+      description: retrieving a post object data.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    put:
+      operationId: v2_post-viewset_post-viewset_update
+      description: editing a post object data.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    patch:
+      operationId: v2_post-viewset_post-viewset_partial_update
+      description: editing a partial of post object data like some fields of that
+        obj and passs some of them not all of them?
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    delete:
+      operationId: v2_post-viewset_post-viewset_delete
+      description: deleting a post object.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - v2
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this post.
+      required: true
+      type: integer
+  /v2/posts/:
+    get:
+      operationId: v2_posts_list
+      description: retriveing a list of posts.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    post:
+      operationId: v2_posts_create
+      description: creating a post with provided data.
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+      - v2
+    parameters: []
+  /v2/posts/{id}/:
+    get:
+      operationId: v2_posts_read
+      description: retrieving a post object data.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    put:
+      operationId: v2_posts_update
+      description: editing a post object data.
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    patch:
+      operationId: v2_posts_partial_update
+      description: editing a partial of post object data like some fields of that
+        obj and passs some of them not all of them?
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+      - v2
+    delete:
+      operationId: v2_posts_delete
+      description: deleting a post object.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - v2
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this post.
+      required: true
+      type: integer
+definitions:
+  Category:
+    required:
+    - name
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 255
+        minLength: 1
+  Post:
+    required:
+    - title
+    - status
+    - published_date
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      author:
+        title: Author
+        type: integer
+        readOnly: true
+      image:
+        title: Image
+        type: string
+        readOnly: true
+        x-nullable: true
+        format: uri
+      title:
+        title: Title
+        type: string
+        maxLength: 255
+        minLength: 1
+      content:
+        title: Content
+        type: string
+        readOnly: true
+        minLength: 1
+      category:
+        title: Category
+        type: integer
+        x-nullable: true
+      status:
+        title: Status
+        type: boolean
+      created_date:
+        title: Created date
+        type: string
+        format: date-time
+        readOnly: true
+      published_date:
+        title: Published date
+        type: string
+        format: date-time
+      snippet:
+        title: Snippet
+        type: string
+        readOnly: true
+      relative_url:
+        title: Relative url
+        type: string
+        format: uri
+        readOnly: true
+        minLength: 1
+      abs_url:
+        title: Abs url
+        type: string
+        readOnly: true

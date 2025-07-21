@@ -33,8 +33,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'blog_module',
     'account_module',
-    'rest_framework',
+    
     # third party packages
+    'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg', # for swagger+redoc and api document
     'django_filters', # for drf filters(search,filtering,ordering,...)
     
@@ -167,6 +169,7 @@ REST_FRAMEWORK = {
         # for example if we send request in postman with basic authentication for endpoint that need permission something like isAuthenticated we can send username and password with basic authentication. 
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
