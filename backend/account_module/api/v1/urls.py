@@ -31,7 +31,10 @@ urlpatterns = [
     path('jwt/create/',TokenObtainPairView.as_view(),name="jwt-create"), # pass username and password
     path('jwt/refresh/',TokenRefreshView.as_view(),name="jwt-refresh"), # pass refresh token to get access token(refresh has longer time than access token)
     path('jwt/verify/',TokenVerifyView.as_view(),name="jwt-verify"), # pass access token to verify user token and prove token didnt expire
-
+    
+    # custom jwt endpoints
+    path('jwt/custom-create/',views.CustomTokenObtainPairView.as_view(),name="jwt-custom-create"), # pass username and password
+ 
 ]
 
 
