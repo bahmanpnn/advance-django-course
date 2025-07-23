@@ -244,7 +244,8 @@ class PostListModelViewSet(viewsets.ModelViewSet):
         getting a list of posts and creating new post and a detail of post object with updating or deleting that object with just one class.
         that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
     """
-    permission_classes=[IsAuthenticatedOrReadOnly,IsAuthorOrReadOnlyPermission]
+    # permission_classes=[IsAuthenticatedOrReadOnly,IsAuthorOrReadOnlyPermission]
+    permission_classes=[IsAuthenticated,IsAuthorOrReadOnlyPermission]
     serializer_class=PostSerializer
     queryset=Post.objects.all()
 

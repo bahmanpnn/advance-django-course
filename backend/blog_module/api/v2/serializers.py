@@ -84,9 +84,9 @@ class PostSerializer(serializers.ModelSerializer):
         """here we set auhtor auto and doesnt need to send fill it in post mehtod."""
         # remember that if we seperate request with  validated_data field we will have 2 query to database.so we have to consider queries in project to.
         # request=self.context.get('request')
-        # validated_data['author']=Profile.object.get(user__id=request.user.id)
-                
-        validated_data['author']=Profile.object.get(user__id=self.context.get('request').user.id)
+        # validated_data['author']=Profile.objects.get(user__id=request.user.id)
+        
+        validated_data["author"] = Profile.objects.get(user__id=self.context.get("request").user.id)
         return super().create(validated_data)
     
     # def update(self, instance, validated_data):
