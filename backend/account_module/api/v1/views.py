@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -9,12 +11,13 @@ from rest_framework_simplejwt.views import ( TokenObtainPairView,
                                             TokenRefreshView,
                                             TokenVerifyView
                                          )
-from django.contrib.auth import get_user_model
 from .serializers import (RegistrationSerializer,
                             CustomAuthTokenSerializer,
                             CustomTokenObtainPairSerializer,
-                            ChangePasswordSerializer
+                            ChangePasswordSerializer,
+                            UserProfileModelSerializer
                             )
+from ...models import Profile
 
 User=get_user_model()
 
@@ -112,4 +115,15 @@ class CustomChangePasswordApiView(generics.GenericAPIView):
             
             return Response({'details':"password changed successfully"},status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-            
+
+
+class UserProfileApiView(generics.RetrieveUpdateAPIView):
+    """for dont passig pk or lookup field to retrieve or update methods of view we can just override get object method of view"""
+    serializer_class=UserProfileModelSerializer
+    permission_classes=[IsAuthenticated]
+    queryset=Profile.objects.all()
+
+    def get_object(self):
+        queryset=self.get_queryset()
+        obj=get_object_or_404(queryset,user=self.request.user)
+        return obj

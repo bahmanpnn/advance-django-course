@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from ...models import User
+from ...models import User,Profile
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -99,3 +99,11 @@ class ChangePasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError({'new_password':list(e.messages)})
 
         return super().validate(attrs)
+    
+
+class UserProfileModelSerializer(serializers.ModelSerializer):
+    # email=serializers.CharField(source='user.email') # next time override validate method of serializer to user can update its email or something like it from other models that fetch here!!
+    email=serializers.CharField(source='user.email',read_only=True)
+    class Meta:
+        model=Profile
+        fields=['id','first_name','last_name','avatar','description','email']

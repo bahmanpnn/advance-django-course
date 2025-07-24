@@ -12,6 +12,7 @@ app_name="api-v1"
 
 urlpatterns = [
     # http://127.0.0.1:8000/accounts/api/v1/
+    # path('',views..as_view(),name=""),
 
     # registration
     path('registration/',views.RegistrationApiView.as_view(),name="registeration"),
@@ -28,6 +29,10 @@ urlpatterns = [
     #logout
     path('token/logout/',views.CustomDiscardAuthToken.as_view(),name="token-logout"),
 
+    # user profile
+    path('profile/',views.UserProfileApiView.as_view(),name="user-profile"),
+
+    # JWT
     # login jwt
     path('jwt/create/',TokenObtainPairView.as_view(),name="jwt-create"), # pass username and password
     path('jwt/refresh/',TokenRefreshView.as_view(),name="jwt-refresh"), # pass refresh token to get access token(refresh has longer time than access token)
