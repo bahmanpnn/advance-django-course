@@ -1,14 +1,7 @@
-from django.urls import path,include
+from django.urls import path
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-    TokenVerifyView
-)
-from . import views
+from .. import views
 
-
-app_name="api-v1"
 
 urlpatterns = [
     # http://127.0.0.1:8000/accounts/api/v1/
@@ -32,16 +25,4 @@ urlpatterns = [
     # user profile
     path('profile/',views.UserProfileApiView.as_view(),name="user-profile"),
 
-    # JWT
-    # login jwt
-    path('jwt/create/',TokenObtainPairView.as_view(),name="jwt-create"), # pass username and password
-    path('jwt/refresh/',TokenRefreshView.as_view(),name="jwt-refresh"), # pass refresh token to get access token(refresh has longer time than access token)
-    path('jwt/verify/',TokenVerifyView.as_view(),name="jwt-verify"), # pass access token to verify user token and prove token didnt expire
-    
-    # custom jwt endpoints
-    path('jwt/custom-create/',views.CustomTokenObtainPairView.as_view(),name="jwt-custom-create"), # pass username and password
- 
 ]
-
-
-
