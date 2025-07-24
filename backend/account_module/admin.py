@@ -44,8 +44,8 @@ class CustomUserAdmin(UserAdmin):
     # add_form=CustomUserCreationForm # add new user form
     # add_form=CustomUserCreationFormTwo # add new user form
     # form=CustomUserChangeForm # change user form
-    list_display=('email','is_superuser','is_active')
-    list_filter=('email','is_superuser','is_active')
+    list_display=('email','is_superuser','is_active','is_verified')
+    list_filter=('email','is_superuser','is_active','is_verified')
     search_fields=('email',)
     ordering=('email',)
 
@@ -57,7 +57,7 @@ class CustomUserAdmin(UserAdmin):
         }),
         ('permissions', {
             "fields": (
-                'is_staff','is_superuser','is_active'
+                'is_staff','is_superuser','is_active','is_verified'
             ),
         }),
         ('group permissions', {
@@ -75,7 +75,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets=(
         (None,{
             'classes':('wide',),
-            'fields':('email','password1','password2','is_staff','is_superuser','is_active'),
+            'fields':('email','password1','password2','is_staff','is_superuser','is_active','is_verified'),
         }),
     )
     
