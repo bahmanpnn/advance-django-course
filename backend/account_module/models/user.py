@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import (BaseUserManager,AbstractBaseUser,PermissionsMixin)
-# from django.utils.translation import ugettext_lazy as _
-from django.dispatch import receiver
-from django.db.models.signals import post_save
 
 
 class UserManager(BaseUserManager):
@@ -57,5 +54,3 @@ class User(AbstractBaseUser,PermissionsMixin):
     objects=UserManager()
     def __str__(self):
         return self.email
-
-
