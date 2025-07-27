@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -127,3 +128,18 @@ class UserProfileApiView(generics.RetrieveUpdateAPIView):
         queryset=self.get_queryset()
         obj=get_object_or_404(queryset,user=self.request.user)
         return obj
+    
+
+class SendTestEmail(generics.GenericAPIView):
+    serializer_class=None
+
+    def get(self, request, *args, **kwargs):
+        send_mail(
+                'Subject here',
+                'here is the message',
+                'from@example.com',
+                ['to@example.com'],
+                fail_silently=True
+                )
+        print('email sent to user successfully')
+        return Response('email sent')
