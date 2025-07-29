@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt', # jwt
     'drf_yasg', # for swagger+redoc and api document
     'django_filters', # for drf filters(search,filtering,ordering,...)
+    'mail_templated',
     
 ]
 
