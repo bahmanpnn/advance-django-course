@@ -1,5 +1,5 @@
 # from django.core.mail import send_mail # django default email sending
-from mail_templated import send_mail # mail templated
+from mail_templated import send_mail,EmailMessage # mail templated
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 # from rest_framework.authtoken.views import ObtainAuthToken
@@ -19,6 +19,7 @@ from .serializers import (RegistrationSerializer,
                             ChangePasswordSerializer,
                             UserProfileModelSerializer
                             )
+from ..utils import EmailThread
 from ...models import Profile
 
 User=get_user_model()
@@ -135,8 +136,9 @@ class SendTestEmail(generics.GenericAPIView):
     serializer_class=UserProfileModelSerializer
 
     def get(self, request, *args, **kwargs):
-
-        send_mail('email/test_email.tpl', {'name': 'bahmanpn'}, 'admin@gmail.com', ['bahmanpn@gmail.com'])
+        
+        # 1
+        # send mail from django.core
         # send_mail(
         #         'Subject here',
         #         'here is the message',
@@ -144,5 +146,17 @@ class SendTestEmail(generics.GenericAPIView):
         #         ['to@example.com'],
         #         fail_silently=True
         #         )
+
+        # 2
+        # send email from mail templated package
+        # send_mail('email/test_email.tpl', {'name': 'bahmanpn'}, 'admin@gmail.com', ['bahmanpn@gmail.com'])
+
+        # send email from mail templated with Email message class.with this class we have more control on email and sending. 
+        # message = EmailMessage('email/test_email.tpl', {'name': 'lion'}, 'admin@gmail.com', to=['mark@gmail.com'])
+        # message.send()
+
+        email_obj = EmailMessage('email/test_email.tpl', {'name': 'wolf'}, 'admin@gmail.com', to=['mark@gmail.com'])
+        EmailThread(email_obj).start()
+
         print('email sent to user successfully')
         return Response('email sent')
