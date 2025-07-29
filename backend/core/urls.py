@@ -27,7 +27,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')), # for better experience to authentication and login in browser with django api view.
     path('accounts/', include("account_module.urls")),
     path('blog/', include("blog_module.urls",namespace='blog_module')),
-    path('api-docs/', include_docs_urls(title='api sample')), # pip install coreapi +add configs in settings and add this for documentation to have simple documenation.
+   #  path('api-docs/', include_docs_urls(title='api sample')), # pip install coreapi +add configs in settings and add this for documentation to have simple documenation.
     
     # api documents endpoints
     path('swagger/output.json', schema_view.without_ui(cache_timeout=0), name='schema-json'), # for download api document with (json or yaml)formats we want.

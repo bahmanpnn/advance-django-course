@@ -1,5 +1,5 @@
 from django.urls import path
-from rest_framework.authtoken.views import ObtainAuthToken
+# from rest_framework.authtoken.views import ObtainAuthToken
 from .. import views
 
 
@@ -19,8 +19,8 @@ urlpatterns = [
     # reset password
 
     # login token
-    path('token/login/',ObtainAuthToken.as_view(),name="token-login"),
-    path('token/custom-login/',views.CustomObtainAuthToken.as_view(),name="custom-token-login"),
+    # path('token/login/',ObtainAuthToken.as_view(),name="token-login"),
+    # path('token/custom-login/',views.CustomObtainAuthToken.as_view(),name="custom-token-login"),
 
     #logout
     path('token/logout/',views.CustomDiscardAuthToken.as_view(),name="token-logout"),
