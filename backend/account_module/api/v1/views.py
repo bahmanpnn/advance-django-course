@@ -1,7 +1,10 @@
 # from django.core.mail import send_mail # django default email sending
 from mail_templated import send_mail,EmailMessage # mail templated
+import jwt
+from jwt.exceptions import ExpiredSignatureError,InvalidSignatureError
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django.conf import settings
 # from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
@@ -193,5 +196,19 @@ class SendTestEmail(generics.GenericAPIView):
 
 class ActivationAccount(APIView):
     def get(self,request,token,*args, **kwargs):
-        print(token)
-        return Response(token,status=status.HTTP_200_OK)
+        try:
+            token=jwt.decode(token,settings.SECRET_KEY,algorithms=["HS256"])
+            user_id=token.get('user_id')
+        except ExpiredSignatureError:
+            return Response({"details":"token has been expired"})
+        except InvalidSignatureError:
+            return Response({"details":"token is not valid"})
+        user_obj=User.objects.get(pk=user_id)
+        if user_obj.is_verified:
+            return Response({"details":"your account has already been verified!!"})
+
+        user_obj.is_verified=True
+        user_obj.save()
+
+        return Response({"details":"your account has been verified and activated successfully!!"},status=status.HTTP_200_OK)
+    
