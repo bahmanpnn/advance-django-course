@@ -10,6 +10,9 @@ urlpatterns = [
     # registration
     path('registration/',views.RegistrationApiView.as_view(),name="registeration"),
 
+    # activation
+    path('activation/confirm/<str:token>',views.ActivationAccount.as_view(),name="activation-account"),
+
     # test email sending
     path('test-email/',views.SendTestEmail.as_view(),name='email-sending-test'),
 

@@ -34,6 +34,8 @@ class RegistrationApiView(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.save()
 
+            user_email=serializer.validated_data['email']
+
             # way 1
             # serializer.validated_data.pop('password')
             # serializer.validated_data.pop('password2')
@@ -48,11 +50,26 @@ class RegistrationApiView(generics.GenericAPIView):
 
             # way 3
             data={
-                'email':serializer.validated_data['email']
+                'email':user_email
             }
+            user_obj=get_object_or_404(User,email=user_email)
+            user_token=self.get_token_for_user(user_obj)
+
+            # send email after token generation
+            email_obj = EmailMessage('email/activation_email.tpl', {'name': user_obj,'user_token':user_token}, 'admin@gmail.com', to=[user_email])
+            EmailThread(email_obj).start()
+
+            # return Response('email sent')
             return Response(data,status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+    
+    def get_token_for_user(self,user_obj):
+        """ this method works with jwt token generation and use refresh token class of jwt."""
+
+        refresh=RefreshToken.for_user(user_obj)
+        return str(refresh.access_token)
 
 
 # class CustomObtainAuthToken(ObtainAuthToken):
@@ -172,3 +189,9 @@ class SendTestEmail(generics.GenericAPIView):
 
         refresh=RefreshToken.for_user(user_obj)
         return str(refresh.access_token)
+
+
+class ActivationAccount(APIView):
+    def get(self,request,token,*args, **kwargs):
+        print(token)
+        return Response(token,status=status.HTTP_200_OK)
