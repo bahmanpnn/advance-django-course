@@ -21,7 +21,8 @@ from .serializers import (RegistrationSerializer,
                             CustomAuthTokenSerializer,
                             CustomTokenObtainPairSerializer,
                             ChangePasswordSerializer,
-                            UserProfileModelSerializer
+                            UserProfileModelSerializer,
+                            ActivationResendSerializer
                             )
 from ..utils import EmailThread
 from ...models import Profile
@@ -194,7 +195,7 @@ class SendTestEmail(generics.GenericAPIView):
         return str(refresh.access_token)
 
 
-class ActivationAccount(APIView):
+class ActivationAccountAPIView(APIView):
     def get(self,request,token,*args, **kwargs):
         try:
             token=jwt.decode(token,settings.SECRET_KEY,algorithms=["HS256"])
@@ -212,3 +213,25 @@ class ActivationAccount(APIView):
 
         return Response({"details":"your account has been verified and activated successfully!!"},status=status.HTTP_200_OK)
     
+
+class ActivationResendGenerciAPIView(generics.GenericAPIView):
+    serializer_class=ActivationResendSerializer
+
+    def post(self,request,*args, **kwargs):
+        serializer=self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user_obj=serializer.validated_data['user']
+        user_token=self.get_token_for_user(user_obj)
+
+        # send email after token generation
+        email_obj = EmailMessage('email/activation_email.tpl', {'name': user_obj,'user_token':user_token}, 'admin@gmail.com', to=[user_obj.email])
+        EmailThread(email_obj).start()
+
+        return Response({'detail':"user activation resend successfully;so check your email to activate your account"},status=status.HTTP_200_OK)
+
+    
+    def get_token_for_user(self,user_obj):
+        """ this method works with jwt token generation and use refresh token class of jwt."""
+
+        refresh=RefreshToken.for_user(user_obj)
+        return str(refresh.access_token)

@@ -7,19 +7,20 @@ urlpatterns = [
     # http://127.0.0.1:8000/accounts/api/v1/
     # path('',views..as_view(),name=""),
 
+    # test email sending
+    path('test-email/',views.SendTestEmail.as_view(),name='email-sending-test'),
+
     # registration
     path('registration/',views.RegistrationApiView.as_view(),name="registeration"),
 
     # activation
-    path('activation/confirm/<str:token>',views.ActivationAccount.as_view(),name="activation-account"),
+    path('activation/confirm/<str:token>',views.ActivationAccountAPIView.as_view(),name="activation-account"),
+    path('activation/resend/',views.ActivationResendGenerciAPIView.as_view(),name="resend-activation-account"),
 
-    # test email sending
-    path('test-email/',views.SendTestEmail.as_view(),name='email-sending-test'),
+    # reset password
 
     # change password
     path('change-password/',views.CustomChangePasswordApiView.as_view(),name='custom-change-password'),
-
-    # reset password
 
     # login token
     # path('token/login/',ObtainAuthToken.as_view(),name="token-login"),
