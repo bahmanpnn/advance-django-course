@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken # this is for email sending and token generation
 from rest_framework_simplejwt.views import ( TokenObtainPairView,
                                             TokenRefreshView,
                                             TokenVerifyView
@@ -136,6 +137,7 @@ class SendTestEmail(generics.GenericAPIView):
     serializer_class=UserProfileModelSerializer
 
     def get(self, request, *args, **kwargs):
+        self.email="bahman@gmail.com"
         
         # 1
         # send mail from django.core
@@ -155,8 +157,18 @@ class SendTestEmail(generics.GenericAPIView):
         # message = EmailMessage('email/test_email.tpl', {'name': 'lion'}, 'admin@gmail.com', to=['mark@gmail.com'])
         # message.send()
 
-        email_obj = EmailMessage('email/test_email.tpl', {'name': 'wolf'}, 'admin@gmail.com', to=['mark@gmail.com'])
+        # find user and generate token for user
+        user_obj=get_object_or_404(User,email=self.email)
+        user_token=self.get_token_for_user(user_obj)
+
+        # send email after token generation
+        email_obj = EmailMessage('email/test_email.tpl', {'name': user_obj,'user_token':user_token}, 'admin@gmail.com', to=[self.email])
         EmailThread(email_obj).start()
 
-        print('email sent to user successfully')
         return Response('email sent')
+    
+    def get_token_for_user(self,user_obj):
+        """ this method works with jwt token generation and use refresh token class of jwt."""
+
+        refresh=RefreshToken.for_user(user_obj)
+        return str(refresh.access_token)
