@@ -10,11 +10,17 @@ class Post(models.Model):
 
     # author=models.ForeignKey(User,on_delete=models.CASCADE)
     # author=models.ForeignKey(Profile, on_delete=models.CASCADE)
-    author = models.ForeignKey("account_module.Profile", on_delete=models.CASCADE)
-    image = models.ImageField(null=True, blank=True)  # need to install pillow package
+    author = models.ForeignKey(
+        "account_module.Profile", on_delete=models.CASCADE
+    )
+    image = models.ImageField(
+        null=True, blank=True
+    )  # need to install pillow package
     title = models.CharField(max_length=255)
     content = models.TextField()
-    category = models.ForeignKey("Category", on_delete=models.SET_NULL, null=True)
+    category = models.ForeignKey(
+        "Category", on_delete=models.SET_NULL, null=True
+    )
     status = models.BooleanField()
 
     created_date = models.DateTimeField(auto_now_add=True)
@@ -33,7 +39,8 @@ class Post(models.Model):
         # base_name + detail or other path that django view set create automaticaly
         # post-model-viewset-detail ==> post-model-viewset + detail
         return reverse(
-            "blog_module:api-v2:post-model-viewset-detail", kwargs={"pk": self.pk}
+            "blog_module:api-v2:post-model-viewset-detail",
+            kwargs={"pk": self.pk},
         )
 
 

@@ -5,9 +5,13 @@ from . import views as v2_views
 app_name = "api-v2"
 
 router = DefaultRouter()
-router.register("post-viewset", v2_views.PostListViewSet, basename="post-viewset")
 router.register(
-    "post-model-viewset", v2_views.PostListModelViewSet, basename="post-model-viewset"
+    "post-viewset", v2_views.PostListViewSet, basename="post-viewset"
+)
+router.register(
+    "post-model-viewset",
+    v2_views.PostListModelViewSet,
+    basename="post-model-viewset",
 )
 
 # remember that diffrence of default and simple router is just api-root and schema for documention that there is not in simple router.

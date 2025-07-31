@@ -36,10 +36,14 @@ urlpatterns = [
     ),
     path(
         "go-to-google-three/",
-        RedirectView.as_view(pattern_name="blog_module:fbv-index", permanent=True),
+        RedirectView.as_view(
+            pattern_name="blog_module:fbv-index", permanent=True
+        ),
         name="redirectview-three",
     ),
-    path("fbv-go-to-google/", views.redirect_to_google, name="fbv-redirectview"),
+    path(
+        "fbv-go-to-google/", views.redirect_to_google, name="fbv-redirectview"
+    ),
     path(
         "cbv-go-to-google/<int:pk>/",
         views.RedirectToGoogle.as_view(),
@@ -47,13 +51,29 @@ urlpatterns = [
     ),
     # List view + Detail view
     path("posts/", views.PostListView.as_view(), name="post-list"),
-    path("post-detail/<int:pk>/", views.PostDetailView.as_view(), name="post-detail"),
+    path(
+        "post-detail/<int:pk>/",
+        views.PostDetailView.as_view(),
+        name="post-detail",
+    ),
     # Form view + Create view
     path("posts/form-view/", views.PostFormView.as_view(), name="post-form"),
-    path("posts/create-view/", views.PostCreateView.as_view(), name="post-create-form"),
+    path(
+        "posts/create-view/",
+        views.PostCreateView.as_view(),
+        name="post-create-form",
+    ),
     # Update view + Delete view
-    path("posts/<int:pk>/update/", views.PostUpdateView.as_view(), name="post-update"),
-    path("posts/<int:pk>/delete/", views.PostDeleteView.as_view(), name="post-delete"),
+    path(
+        "posts/<int:pk>/update/",
+        views.PostUpdateView.as_view(),
+        name="post-update",
+    ),
+    path(
+        "posts/<int:pk>/delete/",
+        views.PostDeleteView.as_view(),
+        name="post-delete",
+    ),
     # Django Rest Framework
     path("api/v1/", include("blog_module.api.v1.urls")),
     path("api/v2/", include("blog_module.api.v2.urls")),

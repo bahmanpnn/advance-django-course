@@ -140,7 +140,9 @@ class CustomChangePasswordApiView(generics.GenericAPIView):
 
         if serializer.is_valid():
             # check old password
-            if not self.object.check_password(serializer.data.get("old_password")):
+            if not self.object.check_password(
+                serializer.data.get("old_password")
+            ):
                 return Response(
                     {"old_password": ["wrong password."]},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -151,7 +153,8 @@ class CustomChangePasswordApiView(generics.GenericAPIView):
             self.object.save()
 
             return Response(
-                {"details": "password changed successfully"}, status=status.HTTP_200_OK
+                {"details": "password changed successfully"},
+                status=status.HTTP_200_OK,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -218,7 +221,9 @@ class SendTestEmail(generics.GenericAPIView):
 class ActivationAccountAPIView(APIView):
     def get(self, request, token, *args, **kwargs):
         try:
-            token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
+            token = jwt.decode(
+                token, settings.SECRET_KEY, algorithms=["HS256"]
+            )
             user_id = token.get("user_id")
         except ExpiredSignatureError:
             return Response({"details": "token has been expired"})
@@ -226,13 +231,17 @@ class ActivationAccountAPIView(APIView):
             return Response({"details": "token is not valid"})
         user_obj = User.objects.get(pk=user_id)
         if user_obj.is_verified:
-            return Response({"details": "your account has already been verified!!"})
+            return Response(
+                {"details": "your account has already been verified!!"}
+            )
 
         user_obj.is_verified = True
         user_obj.save()
 
         return Response(
-            {"details": "your account has been verified and activated successfully!!"},
+            {
+                "details": "your account has been verified and activated successfully!!"
+            },
             status=status.HTTP_200_OK,
         )
 

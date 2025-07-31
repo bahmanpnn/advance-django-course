@@ -91,5 +91,6 @@ def post_detail_api_view(request, id):
         post.delete()
         # its important to know in delete design pattern we can use staus 200 too and it deponds on us to choose which one is better.but 204 is more common.
         return Response(
-            {"detail": "post deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+            {"detail": "post deleted successfully"},
+            status=status.HTTP_204_NO_CONTENT,
         )

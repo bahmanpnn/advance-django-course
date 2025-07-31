@@ -38,7 +38,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "phone_number",
-                    models.CharField(blank=True, max_length=32, null=True, unique=True),
+                    models.CharField(
+                        blank=True, max_length=32, null=True, unique=True
+                    ),
                 ),
                 ("first_name", models.CharField(max_length=255)),
                 ("last_name", models.CharField(max_length=255)),

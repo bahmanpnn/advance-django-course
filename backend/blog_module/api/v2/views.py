@@ -67,7 +67,8 @@ class PostDetailAPIView(APIView):
         post = get_object_or_404(Post, pk=pk, status=True)
         post.delete()
         return Response(
-            {"detail": "post deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+            {"detail": "post deleted successfully"},
+            status=status.HTTP_204_NO_CONTENT,
         )
 
 
@@ -242,13 +243,16 @@ class PostListViewSet(viewsets.ViewSet):
         post = get_object_or_404(Post, pk=pk, status=True)
         post.delete()
         return Response(
-            {"detail": "post deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+            {"detail": "post deleted successfully"},
+            status=status.HTTP_204_NO_CONTENT,
         )
 
     def partial_update(self, request, pk=None):
         """editing a partial of post object data like some fields of that obj and passs some of them not all of them?"""
         post = get_object_or_404(Post, pk=pk, status=True)
-        serializer = self.serializer_class(post, data=request.data, partial=True)
+        serializer = self.serializer_class(
+            post, data=request.data, partial=True
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -277,7 +281,10 @@ class PostListModelViewSet(viewsets.ModelViewSet):
     }
 
     # search_fields=['=title'] # its like iexact query in django orm
-    search_fields = ["title", "content"]  # its like icontains query in django orm
+    search_fields = [
+        "title",
+        "content",
+    ]  # its like icontains query in django orm
     ordering_fields = [
         "published_date"
     ]  # if we dont set fields for ordering django consider all the fields that the model has.

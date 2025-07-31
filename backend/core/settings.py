@@ -21,7 +21,9 @@ DEBUG = config("DEBUG", cast=bool, default="True")  # developing mode
 # DEBUG = config("DEBUG",cast=bool) # production mode
 
 ALLOWED_HOSTS = config(
-    "ALLOWED_HOSTS", cast=lambda v: [s.strip() for s in v.split(",")], default="*"
+    "ALLOWED_HOSTS",
+    cast=lambda v: [s.strip() for s in v.split(",")],
+    default="*",
 )
 
 
@@ -244,9 +246,7 @@ SIMPLE_JWT = {
 # smtp4dev configuration
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_USE_TLS = False  # True for TLS, False for SSL
-EMAIL_HOST = (
-    "smtp4dev"  # SMTP server host ==> ** in docker project must set smtp service name
-)
+EMAIL_HOST = "smtp4dev"  # SMTP server host ==> ** in docker project must set smtp service name
 EMAIL_PORT = 25  # SMTP server port (587 for TLS, 465 for SSL)
 EMAIL_HOST_USER = ""  # SMTP server username
 EMAIL_HOST_PASSWORD = ""  # SMTP server password
