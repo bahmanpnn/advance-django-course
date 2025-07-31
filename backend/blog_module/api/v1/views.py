@@ -1,10 +1,14 @@
-from rest_framework.decorators import api_view,permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+    IsAdminUser,
+)
 from django.shortcuts import get_object_or_404
 from .serializers import PostSerializer
-from ...models import Post # from blog_module.models import Post
+from ...models import Post  # from blog_module.models import Post
 
 
 # Django Rest Framework v1 Endpoints.
@@ -34,14 +38,16 @@ from ...models import Post # from blog_module.models import Post
 
 
 # more clean code for checking validation with no condition and lower code lines.
-@api_view(["GET","POST"])
+@api_view(["GET", "POST"])
 def post_list_api_view(request):
     if request.method == "GET":
-        posts=Post.objects.filter(status=True)
-        serializer=PostSerializer(posts,many=True)
+        posts = Post.objects.filter(status=True)
+        serializer = PostSerializer(posts, many=True)
         return Response(serializer.data)
     if request.method == "POST":
-        serializer=PostSerializer(data=request.data) # passing data arg for serializer is very important when we need checking validation.
+        serializer = PostSerializer(
+            data=request.data
+        )  # passing data arg for serializer is very important when we need checking validation.
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
@@ -63,26 +69,27 @@ def post_list_api_view(request):
 # @api_view()
 # def post_detail_api_view(request,id):
 #     # post=get_object_or_404(Post,pk=id)
-#     # add status filtering when django wants to find post object. 
+#     # add status filtering when django wants to find post object.
 #     post=get_object_or_404(Post,pk=id,status=True)
 #     serializer=PostSerializer(post)
 #     return Response(serializer.data)
 
 
-@api_view(["GET","PUT","DELETE"])
+@api_view(["GET", "PUT", "DELETE"])
 @permission_classes([IsAuthenticatedOrReadOnly])
-def post_detail_api_view(request,id):
-    post=get_object_or_404(Post,pk=id,status=True)
-    if request.method=="GET":
-        serializer=PostSerializer(post)
+def post_detail_api_view(request, id):
+    post = get_object_or_404(Post, pk=id, status=True)
+    if request.method == "GET":
+        serializer = PostSerializer(post)
         return Response(serializer.data)
     elif request.method == "PUT":
-        serializer=PostSerializer(post,data=request.data)
+        serializer = PostSerializer(post, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
     elif request.method == "DELETE":
         post.delete()
         # its important to know in delete design pattern we can use staus 200 too and it deponds on us to choose which one is better.but 204 is more common.
-        return Response({"detail":"post deleted successfully"},status=status.HTTP_204_NO_CONTENT) 
-     
+        return Response(
+            {"detail": "post deleted successfully"}, status=status.HTTP_204_NO_CONTENT
+        )

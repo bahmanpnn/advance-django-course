@@ -1,5 +1,4 @@
-from rest_framework.permissions import BasePermission,SAFE_METHODS
-
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 
 class IsAuthorOrReadOnlyPermission(BasePermission):
@@ -8,7 +7,6 @@ class IsAuthorOrReadOnlyPermission(BasePermission):
         if request.method in SAFE_METHODS:
             return True
         return obj.author.id == request.user.id or request.user.is_superuser
-
 
 
 # class BlackListPermission(BasePermission):

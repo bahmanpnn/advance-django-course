@@ -1,57 +1,62 @@
 from django.db import models
-from django.contrib.auth.models import (BaseUserManager,AbstractBaseUser,PermissionsMixin)
+from django.contrib.auth.models import (
+    BaseUserManager,
+    AbstractBaseUser,
+    PermissionsMixin,
+)
 
 
 class UserManager(BaseUserManager):
     """
-        Custom user model manager where email is the unique identifiers authentication instead of usernames.
+    Custom user model manager where email is the unique identifiers authentication instead of usernames.
     """
-    def create_user(self,email,password,**extra_fields):
-        ''' create and save a simple user with the given email and password with extra data'''
+
+    def create_user(self, email, password, **extra_fields):
+        """create and save a simple user with the given email and password with extra data"""
         if not email:
             # raise ValueError(_("the Email must be set"))
             raise ValueError("the Email must be set")
-        email= self.normalize_email(email)
-        user=self.model(email=email,**extra_fields)
+        email = self.normalize_email(email)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
+    def create_superuser(self, email, password, **extra_fields):
+        """create and save a super user with the given email and password with extra data"""
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_active", True)
+        extra_fields.setdefault("is_superuser", True)
+        extra_fields.setdefault("is_verified", True)
 
-    def create_superuser(self,email,password,**extra_fields):
-        ''' create and save a super user with the given email and password with extra data'''
-        extra_fields.setdefault('is_staff',True)
-        extra_fields.setdefault('is_active',True)
-        extra_fields.setdefault('is_superuser',True)
-        extra_fields.setdefault('is_verified',True)
-
-        if extra_fields.get('is_staff') is not True:
+        if extra_fields.get("is_staff") is not True:
             # raise ValueError(_("superuser must have is_staff=True."))
             raise ValueError("superuser must have is_staff=True.")
-        if extra_fields.get('is_superuser') is not True:
+        if extra_fields.get("is_superuser") is not True:
             # raise ValueError(_("superuser must have is_superuser=True."))
             raise ValueError("superuser must have is_superuser=True.")
-        return self.create_user(email,password,**extra_fields)
+        return self.create_user(email, password, **extra_fields)
 
 
-class User(AbstractBaseUser,PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin):
     """
-        Custom user model for the project
+    Custom user model for the project
     """
 
-    email=models.EmailField(max_length=255,unique=True)
-    is_staff=models.BooleanField(default=False)
-    is_superuser=models.BooleanField(default=False)
-    is_active=models.BooleanField(default=True)
-    is_verified=models.BooleanField(default=False)
+    email = models.EmailField(max_length=255, unique=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_verified = models.BooleanField(default=False)
 
-    USERNAME_FIELD='email'
-    REQUIRED_FIELDS=[]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = []
     # REQUIRED_FIELDS=['phone_number']
 
-    created_date=models.DateTimeField(auto_now_add=True)
-    updated_date=models.DateTimeField(auto_now=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
-    objects=UserManager()
+    objects = UserManager()
+
     def __str__(self):
         return self.email

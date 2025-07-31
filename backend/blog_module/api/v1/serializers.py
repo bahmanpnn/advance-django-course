@@ -11,7 +11,15 @@ from ...models import Post
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
-        model=Post
+        model = Post
         # fields="__all__"
-        fields=["id","author","title","content","category","status","created_date","published_date"]
-    
+        fields = [
+            "id",
+            "author",
+            "title",
+            "content",
+            "category",
+            "status",
+            "created_date",
+            "published_date",
+        ]
