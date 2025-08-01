@@ -18,7 +18,8 @@ exclude=
     __pycache__,
     .env,
     extra_files,
-    settings
+    settings.py,
+    __init__.py,
 
 ignore=
     E501,
