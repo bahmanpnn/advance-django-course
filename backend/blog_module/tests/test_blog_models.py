@@ -12,6 +12,7 @@ class TestPostModel(TestCase):
         so we dont need to create new profile for that user again and django handle it in test and test database.
     """
     def test_create_post_with_valid_data(self):
+
         # first way to get new user with django authentication user model that find auto default user that set in project
         default_user=get_user_model()
         first_new_user=default_user.objects.create_user(email="test@test.com",password="Ab12345!@")
@@ -41,4 +42,33 @@ class TestPostModel(TestCase):
             category=None,
             published_date=datetime.now()
         )
-        self.assertTrue(post.title,'test title')
+        self.assertEquals(post.title,'test title')
+
+
+class TestSecondPostModel(TestCase):
+    """
+       remember that author model has relation with profile not user directly, but we used signals to create profile model after user creation;
+        so we dont need to create new profile for that user again and django handle it in test and test database.
+    """
+
+    def setUp(self):
+        self.user=User.objects.create_user(email="test2@test.com",password="Ab12345!@")
+        self.user_profile=Profile.objects.get(user=User.objects.get(email=self.user.email))
+        return super().setUp()
+    
+    def test_create_post_with_valid_data(self):
+
+        post=Post.objects.create(
+            author=self.user_profile,
+            title='test title',
+            content='test content',
+            status=True,
+            category=None,
+            published_date=datetime.now()
+        )
+        self.assertTrue(Post.objects.filter(pk=post.id).exists())
+        self.assertEquals(post.title,'test title')
+
+
+
+
