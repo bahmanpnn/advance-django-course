@@ -46,4 +46,3 @@ class TestPostForm(TestCase):
 
         form=PostCreateForm(data={})
         self.assertFalse(form.is_valid())
-
