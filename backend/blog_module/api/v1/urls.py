@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views as v1_views
 
+app_name = "api-v1"
 
 urlpatterns = [
     # http://127.0.0.1:8000/blog/api/v1/posts/
