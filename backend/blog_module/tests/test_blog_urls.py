@@ -3,7 +3,6 @@ from django.urls import reverse,resolve
 from .. import views
 
 
-
 class TestUrl(SimpleTestCase):
 
     def test_blog_index_url(self):
