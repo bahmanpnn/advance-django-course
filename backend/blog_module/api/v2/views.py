@@ -266,7 +266,6 @@ class PostListModelViewSet(viewsets.ModelViewSet):
     that is a combination of two views(post list and post detail) but they handles and need 2 urls to pass every method that call and need.
     """
 
-    # permission_classes=[IsAuthenticatedOrReadOnly,IsAuthorOrReadOnlyPermission]
     permission_classes = [IsAuthenticated, IsAuthorOrReadOnlyPermission]
     serializer_class = PostSerializer
     queryset = Post.objects.all()
