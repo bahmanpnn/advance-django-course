@@ -17,4 +17,4 @@ jobs:
     - name: Setup Docker compose
       run: docker compose up -d
     - name: Run Tests
-      run: docker exec backend sh -c "flake8 ."
+      run: docker exec advance_django_backend sh -c "flake8 ."
