@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "blog_module",
     "account_module",
+    "polls", # this is an app for custom commands and template filter tags
     # third party packages
     "rest_framework",
     "rest_framework.authtoken",  # simple token
