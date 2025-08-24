@@ -42,7 +42,10 @@ class Post(models.Model):
             "blog_module:api-v2:post-model-viewset-detail",
             kwargs={"pk": self.pk},
         )
-
+    
+    def get_absolute_url(self):
+        return reverse("blog_module:post-detail", kwargs={"pk": self.pk})
+    
 
 class Category(models.Model):
     """This is a class to define categories for posts of blog app"""

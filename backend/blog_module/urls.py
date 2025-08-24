@@ -74,6 +74,11 @@ urlpatterns = [
         views.PostDeleteView.as_view(),
         name="post-delete",
     ),
+    path(
+        "posts/api/",
+        views.BlogListApiView.as_view(),
+        name="post-list-api-view",
+    ),
     # Django Rest Framework
     path("api/v1/", include("blog_module.api.v1.urls")),
     path("api/v2/", include("blog_module.api.v2.urls")),

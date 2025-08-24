@@ -10,6 +10,9 @@ from ...models import Post
 
 
 class PostSerializer(serializers.ModelSerializer):
+    abs_url =serializers.URLField(
+        source="get_absolute_url", read_only=True
+    )
     class Meta:
         model = Post
         # fields="__all__"
@@ -22,4 +25,5 @@ class PostSerializer(serializers.ModelSerializer):
             "status",
             "created_date",
             "published_date",
+            "abs_url"
         ]

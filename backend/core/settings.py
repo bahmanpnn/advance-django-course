@@ -48,11 +48,13 @@ INSTALLED_APPS = [
     "django_filters",  # for drf filters(search,filtering,ordering,...)
     "mail_templated",
     "djoser",
+    "corsheaders"
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -254,3 +256,11 @@ EMAIL_HOST_PASSWORD = ""  # SMTP server password
 
 # EMAIL_USE_SSL = False  # Set to True if using SSL
 # DEFAULT_FROM_EMAIL = 'your_email@example.com'  # Default sender email address
+
+# CORS_ALLOWED_ORIGINS = [
+#     # "https://sub.example.com",
+#     "http://localhost:8080",
+#     "http://127.0.0.1:8000", # remember that port is important 
+# ]
+
+CORS_ALLOW_ALL_ORIGINS=True

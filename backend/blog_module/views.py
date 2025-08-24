@@ -164,3 +164,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     # form_class=PostDeleteForm
     success_url = "/blog/posts"
+
+
+class BlogListApiView(TemplateView):
+    template_name="post_list_api_view.html"

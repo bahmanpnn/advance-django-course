@@ -9,7 +9,8 @@
     <h2>Post List</h2>
     {% for post in posts %}
         <li>
-            {{post.pk}} - <a href="{% url "blog_module:post-detail" pk=post.pk %}">{{post.title}}</a>
+            {% comment %} {{post.pk}} - <a href="{% url "blog_module:post-detail" pk=post.pk %}">{{post.title}}</a> {% endcomment %}
+            {{post.pk}} - <a href="{{post.get_absolute_url}}">{{post.title}}</a>
             <br>
             {{post.content}}
             <br>
